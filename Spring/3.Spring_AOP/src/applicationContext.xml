@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+        <bean name="c" class="com.aop.pojo.Category">
+                <property name="name" value="yyy" />
+        </bean>
+
+        <bean name="p" class="com.aop.pojo.Product">
+                <property name="name" value="product1" />
+                <property name="category" ref="c" />
+        </bean>
+        <!-- 声明业务对象-->
+        <bean name="s" class="com.aop.service.ProductService"></bean>
+
+        <!-- 声明日志切面对象（id和name类似，但是其为唯一的标识符） -->
+        <bean id="logAspect" class="com.aop.aspect.LogAspect"/>
+        <!-- aop配置 -->
+        <aop:config>
+                <!-- 配置切入点：满足expression中的方法调用,触发了切面-->
+                <aop:pointcut id="loggerCutpoint" expression=
+                        "execution(* com.aop.service.ProductService.*(..))"/>
+
+                <!--  配置切面：pointcut-ref：关联切面和切入点， ref：方法所在类 method：方法名称-->
+                <aop:aspect id="logAspect" ref="logAspect">
+                        <aop:around pointcut-ref="loggerCutpoint" method="log"/>
+                </aop:aspect>
+
+        </aop:config>
+
+</beans>

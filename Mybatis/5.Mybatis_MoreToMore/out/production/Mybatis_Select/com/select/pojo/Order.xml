@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--sql语句映射器-->
+<mapper namespace="com.select.pojo.Order">
+    <!-- 映射实体构建-->
+    <resultMap id="orderBean" type="Order">
+        <id column="oid" property="id"/>
+        <result column="code" property="code"/>
+
+        <!-- Order与OrderItem的一对多关系-->
+        <collection property="orderItems" ofType="com.select.pojo.OrderItem">
+            <id column="pid" property="id"/>
+            <result column="number" property="number"/>
+
+            <!--  OrderItem与Product的多对一关系 -->
+            <association property="product" javaType="com.select.pojo.Product">
+                <id column="pid" property="id"/>
+                <result column="pname" property="name"/>
+                <result column="price" property="price"/>
+            </association>
+
+        </collection>
+
+    </resultMap>
+
+    <!-- sql语句映射实体类，联合三张表进行查询 -->
+    <select id="listOrder" resultMap="orderBean">
+        select o.*, p.*, o.id 'oid', p.id 'pid', oi.id 'oiid', p.name 'pname', oi.number
+        from order_ o
+        left join order_item_ oi    on o.id =oi.oid
+        left join product_ p on p.id = oi.pid
+    </select>
+
+    <select id="getOrder" resultMap="orderBean">
+        select o.*, p.*, o.id 'oid', p.id 'pid', oi.id 'oiid', p.name 'pname',oi.number
+        from order_ o
+        left join order_item_ oi    on o.id =oi.oid
+        left join product_ p on p.id = oi.pid
+        where o.id = #{id}
+    </select>
+
+</mapper>

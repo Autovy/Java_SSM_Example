@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--sql语句映射器-->
+<mapper namespace="com.select.pojo.Product">
+
+    <resultMap type="Product" id="productBean">
+        <id column="pid" property="id"/>
+        <result column="pname" property="name"/>
+        <result column="price" property="price"/>
+
+        <!-- 多对一关系 -->
+        <!-- property: 指的是属性名称， javaType：指的是属性的类型 -->
+        <association property="category" javaType="com.select.pojo.Category">
+        <id column="cid" property="id"/>
+        <result column="cname" property="name"/>
+        </association>
+
+    </resultMap>
+
+    <!-- sql语句返回的表整理数据填入productBean对象中 -->
+    <select id="listp" resultMap="productBean">
+        select c.*, p.*, c.id 'cid', p.id 'pid', c.name 'cname', p.name 'pname' from category_ c left join product_ p on c.id = p.cid
+    </select>
+
+    <!-- 寻找一个 -->
+    <select id="getProduct" resultMap="productBean">
+        select c.*, p.*, c.id 'cid', p.id 'pid', c.name 'cname', p.name 'pname' from category_ c left join product_ p on c.id = p.cid where p.id = #{id}
+    </select>
+
+    <!-- 更新：实际上只需要更新product_表，所以只要修改Product类中category.id}的id提交即可 -->
+    <update id="updatep" parameterType="Product">
+        update product_ set name = #{name}, cid = #{category.id} where id = #{id}
+    </update>
+
+
+
+</mapper>

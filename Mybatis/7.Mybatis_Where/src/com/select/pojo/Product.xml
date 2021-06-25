@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--sql语句映射器-->
+<mapper namespace="com.select.pojo.Product">
+
+    <!-- 动态sql的实现，根据参数输入条件映射不同的sql语句 -->
+    <select id="listProduct" resultType="Product" >
+        select * from product_
+        <!-- 当出现多条件判断时，会出现sql语句多出关键字的问题 -->
+        <!-- 我们可以使用where标签包含多个条件标签-->
+        <!-- 如果任何条件都不成立，那么就在sql语句里就不会出现where关键字 -->
+        <!-- 如果有任何条件成立，会自动去掉多出来的 and 或者 or-->
+
+        <where>
+
+            <!-- 名字模糊匹配筛选 -->
+            <if test="name!=null">
+                and name like concat('%',#{name},'%')
+            </if>
+            <!-- 价格大于输入值筛选 -->
+            <if test="price!=null and price!=0">
+                and price > #{price}
+            </if>
+
+        </where>
+
+    </select>
+
+    <!-- 与where标签类似，update语句中set标签，也起到一样的作用 -->
+    <update id="updateProduct" parameterType="Product" >
+        update product_
+        <set>
+            <if test="name != null">name=#{name},</if>
+            <if test="price != null">price=#{price}</if>
+
+        </set>
+        where id=#{id}
+    </update>
+
+</mapper>

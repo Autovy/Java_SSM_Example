@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--sql语句映射器-->
+<mapper namespace="com.select.pojo.Product">
+
+    <!-- 动态sql的实现，根据参数输入条件映射不同的sql语句 -->
+    <!-- 实现if-else语句，可以使用when，otherwise标签实现 -->
+    <select id="listProduct" resultType="Product" >
+        select * from product_
+        <where>
+            <choose>
+                <when test="name!=null">
+                    and name like concat('%',#{name},'%')
+                </when>
+                <when test="price!=null and price!=0">
+                    and price > #{price}
+                </when>
+                <otherwise>
+                    and id > 1
+                </otherwise>
+            </choose>
+        </where>
+
+
+    </select>
+
+</mapper>

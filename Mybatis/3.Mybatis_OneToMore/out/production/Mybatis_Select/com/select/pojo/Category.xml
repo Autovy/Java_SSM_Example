@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--sql语句映射器-->
+<mapper namespace="com.select.pojo.Category">
+    <!-- 通过resultMap把数据取出来放在对应的 对象属性里 -->
+    <resultMap id="categoryBean" type="Category">
+
+        <id column="cid" property="id"/>
+        <result column="cname" property="name"/>
+
+        <!-- 一对多的关系 -->
+        <!-- property: 指的是集合属性的值, ofType：指的是集合中元素的类型 -->
+        <collection property="products" ofType="com.select.pojo.Product">
+            <id column="pid" property="id"/>
+            <result column="pname" property="name"/>
+            <result column="price" property="price"/>
+        </collection>
+
+    </resultMap>
+
+    <!-- 关联查询分类和产品表 -->
+    <select id="list" resultMap="categoryBean" >
+    <!--  LEFT JOIN 关键字从左表（table1）返回所有的行，即使右表（table2）中没有匹配。如果右表中没有匹配，则结果为 NULL-->
+    <!-- product_别名为p, category_别名为c -->
+    <!-- c.id 'cid'意味则生成的字段用cid作为别名 ，这些别名，要与column的值对应resultMap -->
+        select c.id 'cid', p.id 'pid', c.name 'cname', p.name 'pname', p.price from category_ c left join product_ p on c.id = p.cid
+    </select>
+
+</mapper>

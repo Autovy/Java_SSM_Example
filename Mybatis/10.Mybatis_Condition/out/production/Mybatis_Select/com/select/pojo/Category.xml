@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--sql语句映射器-->
+<mapper namespace="com.select.pojo.Category">
+    <!-- 模糊查询 -->
+    <select id="listCategory" resultType="Category">
+        select * from category_ where name like concat('%', #{0}, '%');
+    </select>
+
+    <!-- 多条件查询 -->
+    <select id="list" parameterType="map" resultType="Category">
+        select * from category_ where id > #{id} and name like concat('%', #{name}, '%');
+    </select>
+</mapper>
