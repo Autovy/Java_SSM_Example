@@ -1,0 +1,18 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="SpringMybatis:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/SpringMybatis_war_exploded</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="SpringMybatis" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: org.thymeleaf:thymeleaf:Release" />
+          <element id="library" level="project" name="Maven: org.thymeleaf:thymeleaf-spring4:Release" />
+          <element id="library" level="project" name="lib_2" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="SpringMybatis/web/Web" />
+    </root>
+  </artifact>
+</component>

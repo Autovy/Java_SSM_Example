@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 这里namespace指向CategoryMapper即可将sql语句与Mapper中的方法绑定 -->
+<!-- 单独使用xml映射sql语句时，指向是实体类-->
+<mapper namespace="com.app.mapper.CategoryMapper">
+    <insert id="add" parameterType="Category" >
+        insert into category_ ( name ) values (#{name})
+    </insert>
+
+    <delete id="delete" parameterType="Category" >
+        delete from category_ where id= #{id}
+    </delete>
+
+    <select id="get" parameterType="_int" resultType="com.app.pojo.Category">
+        select * from   category_  where id= #{id}
+    </select>
+
+    <update id="update" parameterType="Category" >
+        update category_ set name=#{name} where id=#{id}
+    </update>
+    <select id="list" resultType="com.app.pojo.Category">
+        select * from   category_
+    </select>
+</mapper>
